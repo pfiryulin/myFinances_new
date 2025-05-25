@@ -21,6 +21,21 @@ class CategoryTableController extends Controller
             }
             return view('reportpage.report', compact('data'));
         }
+        else
+        {
+            return redirect()->intended('login');
+        }
+    }
+
+    public static function returnData()
+    {
+        $data = Categoryes::with('type')
+            ->where('user_id', 0)
+            ->get();
+        foreach ($data as $item){
+            $item->types_id = $item->type->type_name;
+        }
+        return json_encode($data);
     }
 }
 
