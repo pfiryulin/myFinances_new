@@ -1,0 +1,9 @@
+  class Data{
+    constructor(){
+
+    }
+
+    showWin(){
+
+    }
+  }
