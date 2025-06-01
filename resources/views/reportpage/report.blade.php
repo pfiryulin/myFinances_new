@@ -7,7 +7,7 @@
                 <td> {{ $item['category_name'] }} </td>
                 <td> {{ $item['types_id'] }} </td>
                 @if($item['user_id'] != 0)
-                    <td><button >Изменить</button></td>
+                    <td><button class="changeBut">Изменить</button></td>
                 @endif
             </tr>
         @endforeach
