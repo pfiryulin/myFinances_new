@@ -11,6 +11,7 @@ class CategoryTableController extends Controller
 {
     public static function showCategory()
     {
+
         if(Auth::check()){
             $user = Auth::id();
             $data = Categoryes::with('type')
@@ -36,6 +37,10 @@ class CategoryTableController extends Controller
             $item->types_id = $item->type->type_name;
         }
         return json_encode($data);
+    }
+
+    public static function showTest(){
+//        echo $this->user;
     }
 }
 
