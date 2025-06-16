@@ -6,6 +6,7 @@ use App\Models\Categoryes;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class CategoryControllerResource extends Controller
 {
@@ -30,7 +31,38 @@ class CategoryControllerResource extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validationRules = [
+            'category_name' => 'required|max:255|string',
+            'types_id' => 'required|integer',
+            'user_id' => 'required|integer',
+        ];
+
+        $errorMessages = [
+            'category_name.required' => 'Введите название категории',
+            'category_name.max' => 'Длинна названия категории не может превышать 255 символов',
+            'types_id.required' => 'Тип категории обязателен',
+        ];
+
+        $rowValid = Validator::make(
+            $request->all(),
+            $validationRules,
+            $errorMessages,
+        );
+
+//        return $rowValid;
+        // todo Разобраться, что с выводом ошибок
+
+        if($rowValid){
+            $newCategory = Categoryes::create(
+                [
+                    'category_name' => $request['category_name'],
+                    'types_id' => $request['types_id'],
+                    'user_id' => $request['user_id'],
+                ]
+            );
+            return $newCategory;
+        }
+
     }
 
     /**

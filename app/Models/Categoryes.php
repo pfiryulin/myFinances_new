@@ -14,6 +14,12 @@ class Categoryes extends Model
 
     protected $table = 'categoryes';
 
+    protected $fillable = [
+        'category_name',
+        'types_id',
+        'user_id',
+    ];
+
     public function type()
     {
         return $this->beLongsTo(Types::class, 'types_id');

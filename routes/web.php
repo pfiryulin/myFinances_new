@@ -33,3 +33,4 @@ Route::get('/change-password', [AuthController::class, 'showChangePasswordFoorm'
 Route::post('/change-password', [AuthController::class, 'changePassword'])->name('changePassword');
 Route::get('/report', [ReportController::class, 'showReport'])->name('report');
 Route::get('/profile/category', [CategoryTableController::class, 'showCategory'])->name('category');
+Route::get('/profile/category/test', [CategoryTableController::class, 'showTest'])->name('categoryTest');
