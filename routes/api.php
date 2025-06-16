@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Services\CategoryTableController;
+use App\Http\Controllers\Services\CategoryControllerResource;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,3 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::get('/profile/category', [CategoryTableController::class, 'returnData'])->name('returnData');
+Route::post('/profile/category/list', [\App\Http\Controllers\Services\CategoryControllerResource::class, 'showUserCategory']);
+Route::post('/profile/category/create', [\App\Http\Controllers\Services\CategoryControllerResource::class, 'store']);
