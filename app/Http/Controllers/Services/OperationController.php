@@ -35,7 +35,7 @@ class OperationController extends Controller
             'types_id' => 'required|integer',
             'user_id' => 'required|integer',
             'summ' => 'required|numeric',
-            'comment' => 'string',
+//            'comment' => 'string',
         ];
 
         $errorMessages = [
@@ -51,6 +51,8 @@ class OperationController extends Controller
         if($rowValid->passes()){
             $newOperation = Operations::create($request->all());
             return $newOperation;
+        }else{
+            return 'ERROR';
         }
     }
 
@@ -75,7 +77,28 @@ class OperationController extends Controller
      */
     public function update(Request $request, Operations $operations)
     {
-        //
+        $validationRules = [
+            'categoryes_id' => 'required|integer',
+            'types_id' => 'required|integer',
+            'user_id' => 'required|integer',
+            'summ' => 'required|numeric',
+//            'comment' => 'string',
+        ];
+
+        $errorMessages = [
+            'summ.required' => 'Сумма обязательна для заполнения',
+        ];
+
+        $rowValid = Validator::make(
+            $request->all(),
+            $validationRules,
+            $errorMessages,
+        );
+
+        if($rowValid->passes()){
+            $operations->update($request->all());
+            return $operations;
+        }
     }
 
     /**
@@ -83,6 +106,7 @@ class OperationController extends Controller
      */
     public function destroy(Operations $operations)
     {
-        //
+        $operations->delete();
+        return 'Запись удалена';
     }
 }

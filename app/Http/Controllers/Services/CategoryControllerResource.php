@@ -117,7 +117,8 @@ class CategoryControllerResource extends Controller
      */
     public function destroy(Categoryes $categoryes)
     {
-        //
+        $categoryes->delete();
+        return 'категория удалена';
     }
 
     /**

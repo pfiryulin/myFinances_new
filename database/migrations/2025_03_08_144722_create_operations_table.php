@@ -16,8 +16,8 @@ return new class extends Migration
     {
         Schema::create('operations', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Categoryes::class)->constrained();
-            $table->foreignIdFor(Types::class)->constrained()->onUpdate('cascade');
+            $table->foreignIdFor(Categoryes::class)->constrained()->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignIdFor(Types::class)->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->foreignIdFor(User::class)->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->float('summ');
             $table->text('comment')->nullable(true);
