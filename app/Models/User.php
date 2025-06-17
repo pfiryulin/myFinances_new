@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Categoryes;
+use App\Models\Balance;
 
 class User extends Authenticatable
 {
@@ -49,5 +50,9 @@ class User extends Authenticatable
     public function categoryes()
     {
         return $this->hasMany(Categoryes::class, 'user_id');
+    }
+
+    public function balance(){
+        return $this->hasOne(Balance::class);
     }
 }
