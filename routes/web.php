@@ -16,8 +16,8 @@ use App\Http\Controllers\Services\CategoryTableController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 // Route::get('/test', [CreateTable::class, 'test'])->name('test');
 Route::get('/test', [CreateTable::class, 'test'])->name('test');

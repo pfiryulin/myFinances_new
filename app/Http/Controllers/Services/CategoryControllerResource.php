@@ -34,7 +34,6 @@ class CategoryControllerResource extends Controller
         $validationRules = [
             'category_name' => 'required|max:255|string',
             'types_id' => 'required|integer',
-            'user_id' => 'required|integer',
         ];
 
         $errorMessages = [
@@ -53,13 +52,7 @@ class CategoryControllerResource extends Controller
         // todo Разобраться, что с выводом ошибок
 
         if($rowValid){
-            $newCategory = Categoryes::create(
-                [
-                    'category_name' => $request['category_name'],
-                    'types_id' => $request['types_id'],
-                    'user_id' => $request['user_id'],
-                ]
-            );
+            $newCategory = Categoryes::create(self::returnData($request));
             return $newCategory;
         }
 
@@ -90,7 +83,6 @@ class CategoryControllerResource extends Controller
         $validationRules = [
             'category_name' => 'required|max:255|string',
             'types_id' => 'required|integer',
-            'user_id' => 'required|integer',
         ];
 
         $errorMessages = [
@@ -106,7 +98,7 @@ class CategoryControllerResource extends Controller
         );
 
         if($rowValid->passes()){
-            $categoryes->update($request->all());
+            $categoryes->update(self::returnData($request));
         }
 
         return $categoryes;
@@ -127,13 +119,20 @@ class CategoryControllerResource extends Controller
 
     public function showUserCategory(Request $request)
     {
-        $request->validate([
-            'user_id' => 'required|integer'
-        ]);
-        $userId = $request->input('user_id');
+        $userId = $request->user()['id'];
         $data = Categoryes::with('type')
             ->whereIn('user_id', [$userId, 0])
             ->get();
+        return $data;
+    }
+
+    public function returnData($request){
+        $data = [
+            'category_name' => $request['category_name'],
+            'types_id' => $request['types_id'],
+            'user_id' => $request->user()['id'],
+        ];
+
         return $data;
     }
 }

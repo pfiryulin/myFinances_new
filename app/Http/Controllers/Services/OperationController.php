@@ -34,9 +34,7 @@ class OperationController extends Controller
         $validationRules = [
             'categoryes_id' => 'required|integer',
             'types_id' => 'required|integer',
-            'user_id' => 'required|integer',
             'summ' => 'required|numeric',
-//            'comment' => 'string',
         ];
 
         $errorMessages = [
@@ -50,7 +48,7 @@ class OperationController extends Controller
         );
 
         if($rowValid->passes()){
-            $newOperation = Operations::create($request->all());
+            $newOperation = Operations::create(self::returnData($request));
             return $newOperation;
         }else{
             return 'ERROR';
@@ -81,9 +79,7 @@ class OperationController extends Controller
         $validationRules = [
             'categoryes_id' => 'required|integer',
             'types_id' => 'required|integer',
-            'user_id' => 'required|integer',
             'summ' => 'required|numeric',
-//            'comment' => 'string',
         ];
 
         $errorMessages = [
@@ -97,7 +93,7 @@ class OperationController extends Controller
         );
 
         if($rowValid->passes()){
-            $operations->update($request->all());
+            $operations->update(self::returnData($request));
             return $operations;
         }else{
             return 'Error';
@@ -115,24 +111,32 @@ class OperationController extends Controller
 
     public function showUserCategory(Request $request)
     {
-        $request->validate([
-            'user_id' => 'required|integer'
-        ]);
-        $userId = $request->input('user_id');
         $data = Operations::with(['type', 'categoryes'])
-            ->where('user_id', $userId)
+            ->where('user_id', $request->user()['id'])
             ->get();
         return $data;
     }
 
-    public function filterOperations(Request $request,User $user)
+    public function filterOperations(Request $request)
     {
         $filter = $request['filter'];
         $value = $request['value'];
         $data = Operations::with(['type', 'categoryes'])
-            ->where('user_id', $user->id)
+            ->where('user_id', $request->user()['id'])
             ->where($filter, $value)
             ->get();
+
+        return $data;
+    }
+
+    public function returnData($request){
+        $data = [
+            'categoryes_id' => $request['categoryes_id'],
+            'types_id' => $request['types_id'],
+            'user_id' => $request->user()['id'],
+            'summ' => $request['summ'],
+            'comment' => $request['comment'],
+        ];
 
         return $data;
     }
