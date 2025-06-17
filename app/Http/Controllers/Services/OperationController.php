@@ -99,6 +99,8 @@ class OperationController extends Controller
         if($rowValid->passes()){
             $operations->update($request->all());
             return $operations;
+        }else{
+            return 'Error';
         }
     }
 
@@ -125,6 +127,15 @@ class OperationController extends Controller
 
     public function filterOperations(Request $request,User $user)
     {
-        return $user;
+        $filter = $request['filter'];
+        $value = $request['value'];
+        $data = Operations::with(['type', 'categoryes'])
+            ->where('user_id', $user->id)
+            ->where($filter, $value)
+            ->get();
+
+        return $data;
     }
+
+    // todo дописать фильтрацию по периоду и сортировку
 }

@@ -28,5 +28,5 @@ Route::post('/profile/category/destroy/{categoryes}', [\App\Http\Controllers\Ser
 Route::post('/profile/operations/store', [\App\Http\Controllers\Services\OperationController::class, 'store']);
 Route::post('/profile/operations/update/{operations}', [\App\Http\Controllers\Services\OperationController::class, 'update']);
 Route::post('/profile/operations/destroy/{operations}', [\App\Http\Controllers\Services\OperationController::class, 'destroy']);
-Route::get('/profile/operations/destroy/{operations}', [\App\Http\Controllers\Services\OperationController::class, 'destroy']);
 Route::post('/profile/operations/list', [\App\Http\Controllers\Services\OperationController::class, 'showUserCategory']);
+Route::post('/profile/operations/filter/{user}', [\App\Http\Controllers\Services\OperationController::class, 'filterOperations']);
