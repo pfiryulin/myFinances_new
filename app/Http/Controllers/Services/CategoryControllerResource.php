@@ -86,7 +86,30 @@ class CategoryControllerResource extends Controller
      */
     public function update(Request $request, Categoryes $categoryes)
     {
-        //
+
+        $validationRules = [
+            'category_name' => 'required|max:255|string',
+            'types_id' => 'required|integer',
+            'user_id' => 'required|integer',
+        ];
+
+        $errorMessages = [
+            'category_name.required' => 'Введите название категории',
+            'category_name.max' => 'Длинна названия категории не может превышать 255 символов',
+            'types_id.required' => 'Тип категории обязателен',
+        ];
+
+        $rowValid = Validator::make(
+            $request->all(),
+            $validationRules,
+            $errorMessages,
+        );
+
+        if($rowValid->passes()){
+            $categoryes->update($request->all());
+        }
+
+        return $categoryes;
     }
 
     /**

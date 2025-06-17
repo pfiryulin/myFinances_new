@@ -22,3 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/profile/category', [CategoryTableController::class, 'returnData'])->name('returnData');
 Route::post('/profile/category/list', [\App\Http\Controllers\Services\CategoryControllerResource::class, 'showUserCategory']);
 Route::post('/profile/category/store', [\App\Http\Controllers\Services\CategoryControllerResource::class, 'store']);
+Route::post('/profile/category/update/{categoryes}', [\App\Http\Controllers\Services\CategoryControllerResource::class, 'update']);
