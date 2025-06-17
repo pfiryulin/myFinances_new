@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Services;
 
 use App\Models\Operations;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -108,5 +109,22 @@ class OperationController extends Controller
     {
         $operations->delete();
         return 'Запись удалена';
+    }
+
+    public function showUserCategory(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|integer'
+        ]);
+        $userId = $request->input('user_id');
+        $data = Operations::with(['type', 'categoryes'])
+            ->where('user_id', $userId)
+            ->get();
+        return $data;
+    }
+
+    public function filterOperations(Request $request,User $user)
+    {
+        return $user;
     }
 }
