@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Services\CategoryTableController;
 use App\Http\Controllers\Services\CategoryControllerResource;
+use App\Http\Controllers\Services\OperationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,3 +24,4 @@ Route::get('/profile/category', [CategoryTableController::class, 'returnData'])-
 Route::post('/profile/category/list', [\App\Http\Controllers\Services\CategoryControllerResource::class, 'showUserCategory']);
 Route::post('/profile/category/store', [\App\Http\Controllers\Services\CategoryControllerResource::class, 'store']);
 Route::post('/profile/category/update/{categoryes}', [\App\Http\Controllers\Services\CategoryControllerResource::class, 'update']);
+Route::post('/profile/operations/store', [\App\Http\Controllers\Services\OperationController::class, 'store']);

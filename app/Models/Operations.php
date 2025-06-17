@@ -12,6 +12,13 @@ class Operations extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'categoryes_id',
+        'types_id',
+        'user_id',
+        'summ' ,
+        'comment',
+    ];
     public function type()
     {
         return $this->beLongsTo(Types::class, 'types_id');
