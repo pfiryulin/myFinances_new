@@ -16,21 +16,8 @@ use App\Http\Controllers\Services\CategoryTableController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 // Route::get('/test', [CreateTable::class, 'test'])->name('test');
 Route::get('/test', [CreateTable::class, 'test'])->name('test');
-
-Route::get('/login', [AuthController::class, 'showLoginFoorm'])->name('loginForm');
-Route::post('/login', [AuthController::class, 'login'])->name('login');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('registerForm');
-Route::post('/register', [AuthController::class, 'register'])->name('register');
-Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
-Route::patch('/profile', [AuthController::class, 'updateProfile'])->name('updateProfile');
-Route::get('/change-password', [AuthController::class, 'showChangePasswordFoorm'])->name('changePasswordFoorm');
-Route::post('/change-password', [AuthController::class, 'changePassword'])->name('changePassword');
-Route::get('/report', [ReportController::class, 'showReport'])->name('report');
-Route::get('/profile/category', [CategoryTableController::class, 'showCategory'])->name('category');
-Route::get('/profile/category/test', [CategoryTableController::class, 'showTest'])->name('categoryTest');
