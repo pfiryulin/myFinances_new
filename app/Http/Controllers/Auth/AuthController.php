@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\BalanceController;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Dotenv\Exception\ValidationException;
@@ -30,6 +31,9 @@ class AuthController extends Controller
         );
 
         $token = $user->createToken('auth_token')->plainTextToken;
+
+        $balace = new BalanceController();
+        $balace->store($user->id);
 
         return response()->json(['token' => $token],201);
 

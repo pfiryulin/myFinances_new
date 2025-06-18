@@ -27,9 +27,16 @@ class BalanceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store($id)
     {
         // todo создание баланса при регистрации пользователя с нулевым значением
+        $balance = Balance::create(
+            [
+                'user_id' => $id,
+                'summ' => 0,
+            ]
+        );
+
     }
 
     /**
