@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\BalanceController;
 
 class OperationController extends Controller
 {
@@ -49,6 +50,13 @@ class OperationController extends Controller
 
         if($rowValid->passes()){
             $newOperation = Operations::create(self::returnData($request));
+
+            $modificator = ($request['types_id'] == 1 || $request['types_id'] ==3) ? 'plus' : 'minus';
+
+            BalanceController::changeBalance($modificator, $request['summ'], $request->user()['id']);
+            /**
+             * TODO Дописать механизм изменения баланса
+             */
             return $newOperation;
         }else{
             return 'ERROR';
@@ -94,6 +102,9 @@ class OperationController extends Controller
 
         if($rowValid->passes()){
             $operations->update(self::returnData($request));
+            /**
+             * TODO Дописать механизм изменения баланса
+             */
             return $operations;
         }else{
             return 'Error';
@@ -105,7 +116,13 @@ class OperationController extends Controller
      */
     public function destroy(Operations $operations)
     {
+        /**
+         * TODO Дописать механизм изменения баланса
+         * ПОлучить операци, сумму и отнять из баланса
+         * Хорошая мысль записывать операции в файл...
+         */
         $operations->delete();
+
         return 'Запись удалена';
     }
 

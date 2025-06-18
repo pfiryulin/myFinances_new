@@ -74,18 +74,31 @@ class BalanceController extends Controller
         //
     }
 
-    public function plussBalance()
+    public static function plussBalance($int, $summ)
     {
-        /** *
-         * todo написать функцию поступления средств
-         */
-
+        $result = $summ + $int;
+        return $result;
     }
 
-    public function minusBalance()
+    public static function minusBalance($int, $summ)
     {
-        /**
-         * todo написать функцию расхода средств
-         */
+        $result = $summ - $int;
+        return $result;
+    }
+
+    public static function changeBalance($modificator, $int, $userId)
+    {
+        $balance = Balance::where('user_id', $userId)->first();
+        $newSumm = 0;
+        switch ($modificator){
+            case 'minus':
+                $newSumm = self::minusBalance($int, $balance['summ']);
+                break;
+            case 'plus':
+                $newSumm = self::plussBalance($int, $balance['summ']);
+                break;
+        }
+
+        $balance->update(['summ' => $newSumm,]);
     }
 }
