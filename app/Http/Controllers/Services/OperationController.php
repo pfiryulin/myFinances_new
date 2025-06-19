@@ -54,7 +54,7 @@ class OperationController extends Controller
             $modificator = ($request['types_id'] == 1 || $request['types_id'] ==3) ? 'plus' : 'minus';
 
 //            BalanceController::changeBalance($modificator, $request['summ'], $request->user()['id']);
-            self::changeBalance($modificator, $request['summ'], $request->user()['id']);
+            self::changeBalance($modificator, $request['summ'], $request);
             /**
              * TODO Дописать механизм изменения баланса
              */
@@ -85,6 +85,7 @@ class OperationController extends Controller
      */
     public function update(Request $request, Operations $operations)
     {
+
         $validationRules = [
             'categoryes_id' => 'required|integer',
             'types_id' => 'required|integer',
@@ -102,10 +103,21 @@ class OperationController extends Controller
         );
 
         if($rowValid->passes()){
-            $operations->update(self::returnData($request));
-            /**
-             * TODO Дописать механизм изменения баланса
-             */
+            $data = self::returnData($request);
+
+            if($operations['types_id'] == 1 || $operations['types_id'] == 3){ //Если операция была доходная либо дипозит, то отнимаем от баланса сумму операции
+                self::changeBalance('minus', $operations['summ'], $request);
+            }
+            else{ //если операция была доходная, то прибавляем к балансу сумму операции.
+                self::changeBalance('plus', $operations['summ'], $request);
+            }
+
+            $modificator = ($request['types_id'] == 1 || $request['types_id'] ==3) ? 'plus' : 'minus'; //определяем тип операции и устанавливаем модификатор для изменения баланса
+
+            if($operations->update($data)){ //обновляем операцию
+                self::changeBalance($modificator, $request['summ'], $request); //обновляем баланс
+            }
+
             return $operations;
         }else{
             return 'Error';
@@ -115,19 +127,20 @@ class OperationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Operations $operations)
+    public function destroy(Request $request, Operations $operations)
     {
-        /**
-         * TODO Дописать механизм изменения баланса
-         * ПОлучить операци, сумму и отнять из баланса
-         * Хорошая мысль записывать операции в файл...
-         */
+        if($operations['types_id'] == 1 || $operations['types_id'] == 3){ //Если операция была доходная либо дипозит, то отнимаем от баланса сумму операции
+            self::changeBalance('minus', $operations['summ'], $request);
+        }
+        else{ //если операция была доходная, то прибавляем к балансу сумму операции.
+            self::changeBalance('plus', $operations['summ'], $request);
+        }
         $operations->delete();
 
         return 'Запись удалена';
     }
 
-    public function showUserCategory(Request $request)
+    public function showUserOperations(Request $request)
     {
         $data = Operations::with(['type', 'categoryes'])
             ->where('user_id', $request->user()['id'])
@@ -159,8 +172,8 @@ class OperationController extends Controller
         return $data;
     }
 
-    public function changeBalance($modificator, $int, $userId){
-        BalanceController::changeBalance($modificator, $int, $userId);
+    public function changeBalance($modificator, $int, $request){
+        BalanceController::changeBalance($modificator, $int, $request);
     }
 
     // todo дописать фильтрацию по периоду и сортировку

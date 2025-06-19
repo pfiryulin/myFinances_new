@@ -42,9 +42,10 @@ class BalanceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Balance $balance)
+    public static function show(Request $request)
     {
-        // todo вывод баланса
+        $balance = Balance::where('user_id', $request->user()['id'])->first();
+        return $balance;
     }
 
     /**
@@ -61,8 +62,7 @@ class BalanceController extends Controller
     public function update(Request $request, Balance $balance)
     {
         /***
-         * todo вызов функций для обновления баланса
-         * написать функции для прихода и расхода средств
+         * Обновляем в self::changeBalance()
         */
     }
 
@@ -86,9 +86,9 @@ class BalanceController extends Controller
         return $result;
     }
 
-    public static function changeBalance($modificator, $int, $userId)
+    public static function changeBalance($modificator, $int, $request)
     {
-        $balance = Balance::where('user_id', $userId)->first();
+        $balance = self::show($request);
         $newSumm = 0;
         switch ($modificator){
             case 'minus':
