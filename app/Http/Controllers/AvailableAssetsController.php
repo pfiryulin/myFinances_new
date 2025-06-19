@@ -27,17 +27,23 @@ class AvailableAssetsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store($id)
     {
-        //
+        $balance = AvailableAssets::create(
+            [
+                'user_id' => $id,
+                'summ' => 0,
+            ]
+        );
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(AvailableAssets $availableAssets)
+    public function show(Request $request)
     {
-        //
+        $money = AvailableAssets::where('user_id', $request->user()['id'])->first();
+        return $money;
     }
 
     /**

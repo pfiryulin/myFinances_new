@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\AvailableAssetsController;
 use App\Http\Controllers\BalanceController;
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -34,7 +35,8 @@ class AuthController extends Controller
 
         $balace = new BalanceController();
         $balace->store($user->id);
-
+        $availableAssets = new AvailableAssetsController();
+        $availableAssets->store($user->id);
         return response()->json(['token' => $token],201);
 
     }

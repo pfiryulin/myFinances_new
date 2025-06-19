@@ -33,4 +33,4 @@ Route::post('/profile/operations/filter', [\App\Http\Controllers\Services\Operat
 Route::post('/register', [\App\Http\Controllers\Auth\AuthController::class, 'register']);
 Route::post('/login', [\App\Http\Controllers\Auth\AuthController::class, 'login']);
 Route::post('/logout', [\App\Http\Controllers\Auth\AuthController::class, 'login'])->middleware('auth:sanctum');
-Route::get('/test', [\App\Http\Controllers\CreateTable::class, 'test'])->middleware('auth:sanctum');
+Route::get('/test', [\App\Http\Controllers\BalanceController::class, 'show'])->middleware('auth:sanctum');
