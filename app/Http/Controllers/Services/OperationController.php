@@ -53,12 +53,12 @@ class OperationController extends Controller
 
             $modificator = ($request['types_id'] == 1 || $request['types_id'] ==3) ? 'plus' : 'minus';
 
-//            BalanceController::changeBalance($modificator, $request['summ'], $request->user()['id']);
             self::changeBalance($modificator, $request['summ'], $request->user()['id']);
             /**
              * TODO Дописать механизм изменения баланса
              */
             return $newOperation;
+
         }else{
             return 'ERROR';
         }
@@ -102,9 +102,11 @@ class OperationController extends Controller
         );
 
         if($rowValid->passes()){
-            $operations->update(self::returnData($request));
+            $data = self::returnData($request);
+            $operations->update($data);
             /**
-             * TODO Дописать механизм изменения баланса
+             * TODO Дописать механизм изменения баланса. Нужно получить сумму операции, отнять её от текущего баланса, а затем добавить новое значение. Но только в том случае, если меняется конкретно сумма
+             *
              */
             return $operations;
         }else{
@@ -127,7 +129,7 @@ class OperationController extends Controller
         return 'Запись удалена';
     }
 
-    public function showUserCategory(Request $request)
+    public function showUserOperations(Request $request)
     {
         $data = Operations::with(['type', 'categoryes'])
             ->where('user_id', $request->user()['id'])
