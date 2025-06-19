@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Deposite;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class DepositeController extends Controller
 {
@@ -29,7 +30,17 @@ class DepositeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rowValid = validator($request);
+
+        if($rowValid->passes()){
+            $newDeposite = Deposite::create(self::returnData($request));
+
+            return $newDeposite;
+        }else{
+            return response()->json([
+                'errors' => $rowValid->errors(),
+            ], 422);
+        }
     }
 
     /**
@@ -53,7 +64,17 @@ class DepositeController extends Controller
      */
     public function update(Request $request, Deposite $deposite)
     {
-        //
+        $rowValid = self::validatorData($request);
+
+        if($rowValid->passes()){
+            $newDeposite = $deposite->update(self::returnData($request));
+
+            return $newDeposite;
+        }else{
+            return response()->json([
+                'errors' => $rowValid->errors(),
+            ], 422);
+        }
     }
 
     /**
@@ -61,6 +82,39 @@ class DepositeController extends Controller
      */
     public function destroy(Deposite $deposite)
     {
-        //
+        /**
+         * TODO Механим удаления депозита. Нужно подумать что делать со средствами на депозите? Следует ли перед удалением проверять остаток на депозите? Думаю стоит проверить на наличие денег, если ноль, закрыть депозит, если есть, предложить перевести
+         */
+    }
+
+    public function returnData($request){
+        $data = [
+            'name' => $request['name'],
+            'user_id' => $request->user()['id'],
+            'summ' => $request['summ'],
+        ];
+
+        return $data;
+    }
+
+    public function validatorData($request){
+        $validationRules = [
+            'name' => 'required|string',
+            'summ' => 'required|numeric',
+        ];
+
+        $errorMessages = [
+            'summ.required' => 'Сумма обязательна для заполнения',
+            'summ.numeric' => 'Сумма должна быть числом',
+            'name.required' => 'Наименование обязательно',
+        ];
+
+        $rowValid = Validator::make(
+            $request->all(),
+            $validationRules,
+            $errorMessages,
+        );
+
+        return $rowValid;
     }
 }

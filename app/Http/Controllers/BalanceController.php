@@ -101,4 +101,8 @@ class BalanceController extends Controller
 
         $balance->update(['summ' => $newSumm,]);
     }
+
+    /**
+     * TODO механизм пополнения и снятия с депозита
+     */
 }

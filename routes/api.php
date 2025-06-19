@@ -34,3 +34,5 @@ Route::post('/register', [\App\Http\Controllers\Auth\AuthController::class, 'reg
 Route::post('/login', [\App\Http\Controllers\Auth\AuthController::class, 'login']);
 Route::post('/logout', [\App\Http\Controllers\Auth\AuthController::class, 'login'])->middleware('auth:sanctum');
 Route::get('/test', [\App\Http\Controllers\BalanceController::class, 'show'])->middleware('auth:sanctum');
+Route::post('/profile/deposite/store', [\App\Http\Controllers\DepositeController::class, 'store'])->middleware('auth:sanctum');
+Route::post('/profile/deposite/update/{deposite}', [\App\Http\Controllers\DepositeController::class, 'update'])->middleware('auth:sanctum');

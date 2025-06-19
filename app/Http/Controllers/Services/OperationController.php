@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * TODO Переписать валидацию в отдельный метод.
+ */
+
 namespace App\Http\Controllers\Services;
 
 use App\Models\Operations;
@@ -40,6 +44,9 @@ class OperationController extends Controller
 
         $errorMessages = [
             'summ.required' => 'Сумма обязательна для заполнения',
+            'summ.numeric' => 'Сумма должна быть числом',
+            'categoryes_id.required' => 'Категория обязательна для заполнения',
+            'categoryes_id.integer' => 'Категория должна быть числом',
         ];
 
         $rowValid = Validator::make(
@@ -55,12 +62,12 @@ class OperationController extends Controller
 
 //            BalanceController::changeBalance($modificator, $request['summ'], $request->user()['id']);
             self::changeBalance($modificator, $request['summ'], $request);
-            /**
-             * TODO Дописать механизм изменения баланса
-             */
+
             return $newOperation;
         }else{
-            return 'ERROR';
+            return response()->json([
+                'errors' => $rowValid->errors(),
+            ], 422);
         }
     }
 
@@ -93,6 +100,9 @@ class OperationController extends Controller
 
         $errorMessages = [
             'summ.required' => 'Сумма обязательна для заполнения',
+            'summ.numeric' => 'Сумма должна быть числом',
+            'categoryes_id.required' => 'Категория обязательна для заполнения',
+            'categoryes_id.integer' => 'Категория должна быть числом',
         ];
 
         $rowValid = Validator::make(
@@ -119,7 +129,9 @@ class OperationController extends Controller
 
             return $operations;
         }else{
-            return 'Error';
+            return response()->json([
+                'errors' => $rowValid->errors(),
+            ], 422);
         }
     }
 
