@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Categoryes;
 use App\Models\Balance;
+use App\Models\AvailableAssets;
 use App\Models\Deposite;
 
 class User extends Authenticatable
@@ -55,6 +56,9 @@ class User extends Authenticatable
 
     public function balance(){
         return $this->hasOne(Balance::class);
+    }
+    public function availableassets(){
+        return $this->hasOne(AvailableAssets::class);
     }
 
     public function deposite()

@@ -28,9 +28,9 @@ Route::post('/profile/category/destroy/{categoryes}', [\App\Http\Controllers\Ser
 Route::post('/profile/operations/store', [\App\Http\Controllers\Services\OperationController::class, 'store'])->middleware('auth:sanctum');
 Route::post('/profile/operations/update/{operations}', [\App\Http\Controllers\Services\OperationController::class, 'update'])->middleware('auth:sanctum');
 Route::post('/profile/operations/destroy/{operations}', [\App\Http\Controllers\Services\OperationController::class, 'destroy'])->middleware('auth:sanctum');
-Route::post('/profile/operations/list', [\App\Http\Controllers\Services\OperationController::class, 'showUserCategory'])->middleware('auth:sanctum');
+Route::post('/profile/operations/list', [\App\Http\Controllers\Services\OperationController::class, 'showUserOperations'])->middleware('auth:sanctum');
 Route::post('/profile/operations/filter', [\App\Http\Controllers\Services\OperationController::class, 'filterOperations'])->middleware('auth:sanctum');
 Route::post('/register', [\App\Http\Controllers\Auth\AuthController::class, 'register']);
 Route::post('/login', [\App\Http\Controllers\Auth\AuthController::class, 'login']);
 Route::post('/logout', [\App\Http\Controllers\Auth\AuthController::class, 'login'])->middleware('auth:sanctum');
-Route::get('/test', [\App\Http\Controllers\CreateTable::class, 'test'])->middleware('auth:sanctum');
+Route::get('/test', [\App\Http\Controllers\BalanceController::class, 'show'])->middleware('auth:sanctum');
