@@ -10,35 +10,56 @@ use Dotenv\Exception\ValidationException;
 use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        $data = $request->validate(
-            [
-                'name' => 'required|string',
-                'email' => 'required|string|email|unique:users',
-                'password' => 'required|string',
-            ]
+
+        $validationRules = [
+            'name' => 'required|string',
+            'email' => 'required|string|email|unique:users',
+            'password' => 'required|string',
+        ];
+
+        $errorMessages = [
+            'name.required' => 'имя обязательно для заполнения',
+            'password.required' => 'Пароль обязательно для заполнения',
+            'email.required' => 'Email обязательно для заполнения',
+            'email.unique' => 'Пользователь с таким логином уже существует',
+            'summ.numeric' => 'Сумма должна быть числом',
+        ];
+
+        $rowValid = Validator::make(
+            $request->all(),
+            $validationRules,
+            $errorMessages,
         );
 
-        $user = User::create(
-            [
-                'name' => $data['name'],
-                'email' => $data['email'],
-                'password' => Hash::make($data['password']),
-            ]
-        );
+        if($rowValid->passes()){
+            $user = User::create(
+                [
+                    'name' => $request['name'],
+                    'email' => $request['email'],
+                    'password' => Hash::make($request['password']),
+                ]
+            );
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+            $token = $user->createToken('auth_token')->plainTextToken;
 
-        $balace = new BalanceController();
-        $balace->store($user->id);
-        $availableAssets = new AvailableAssetsController();
-        $availableAssets->store($user->id);
-        return response()->json(['token' => $token],201);
+            $balace = new BalanceController();
+            $balace->store($user->id);
 
+            $availableAssets = new AvailableAssetsController();
+            $availableAssets->store($user->id);
+
+            return response()->json(['token' => $token],201);
+        }else{
+            return response()->json([
+                'errors' => $rowValid->errors(),
+            ], 422);
+        }
     }
 
     public function login(Request $request)

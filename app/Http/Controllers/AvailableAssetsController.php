@@ -42,6 +42,7 @@ class AvailableAssetsController extends Controller
      */
     public function show(Request $request)
     {
+//        return $request->user()['id'];
         $money = AvailableAssets::where('user_id', $request->user()['id'])->first();
         return $money;
     }
@@ -57,9 +58,10 @@ class AvailableAssetsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, AvailableAssets $availableAssets)
+    public function update($availableAssets, $newScore)
     {
-        //
+        $newAvailableAssets = new AvailableAssets;
+        $newAvailableAssets->update(['summ' => $newScore]);
     }
 
     /**
@@ -69,4 +71,17 @@ class AvailableAssetsController extends Controller
     {
         //
     }
+
+    public function plussSumm($request, $int = 10){
+        $score = self::show($request);
+        $newScore = $score['summ'] + $int;
+        self::update($score, $newScore);
+        return $score;
+    }
+
+    public function testSumm(Request $request){
+        self::plussSumm($request, 100);
+        return $request;
+    }
+
 }

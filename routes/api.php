@@ -38,3 +38,6 @@ Route::post('/profile/deposite/store', [\App\Http\Controllers\DepositeController
 Route::post('/profile/deposite/update/{deposite}', [\App\Http\Controllers\DepositeController::class, 'update'])->middleware('auth:sanctum');
 Route::post('/profile/deposite/top/{deposite}', [\App\Http\Controllers\DepositeController::class, 'topDeposit'])->middleware('auth:sanctum');
 Route::post('/profile/deposite/from/{deposite}', [\App\Http\Controllers\DepositeController::class, 'fromDeposit'])->middleware('auth:sanctum');
+Route::post('/profile/available_assets/show', [\App\Http\Controllers\AvailableAssetsController::class, 'show'])->middleware('auth:sanctum');
+Route::post('/profile/available_assets/plus', [\App\Http\Controllers\AvailableAssetsController::class, 'plussSumm'])->middleware('auth:sanctum');
+Route::post('/profile/available_assets/test', [\App\Http\Controllers\AvailableAssetsController::class, 'testSumm'])->middleware('auth:sanctum');
