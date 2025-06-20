@@ -29,7 +29,6 @@ class BalanceController extends Controller
      */
     public function store($id)
     {
-        // todo создание баланса при регистрации пользователя с нулевым значением
         $balance = Balance::create(
             [
                 'user_id' => $id,

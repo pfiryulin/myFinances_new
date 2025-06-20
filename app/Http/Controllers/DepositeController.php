@@ -117,4 +117,58 @@ class DepositeController extends Controller
 
         return $rowValid;
     }
+
+    public function validateDataSumm($request){
+        $validationRules = [
+            'summ' => 'required|numeric',
+        ];
+
+        $errorMessages = [
+            'summ.required' => 'Сумма обязательна для заполнения',
+            'summ.numeric' => 'Сумма должна быть числом',
+        ];
+
+        $rowValid = Validator::make(
+            $request->all(),
+            $validationRules,
+            $errorMessages,
+        );
+
+        return $rowValid;
+    }
+
+    public function topDeposit(Request $request, Deposite $deposite){
+        $currentSumm = $deposite['summ'];
+        $validation = self::validateDataSumm($request);
+        if($validation->passes()){
+            $newSumm = ['summ' => $currentSumm + $request['summ']];
+
+            $deposite->update($newSumm);
+        }else{
+            return response()->json([
+                'errors' => $validation->errors(),
+            ], 422);
+        }
+        return $deposite;
+    }
+    public function fromDeposit(Request $request, Deposite $deposite){
+        $currentSumm = $deposite['summ'];
+        $validation = self::validateDataSumm($request);
+        if($validation->passes()){
+            if($currentSumm >= $request['summ'] && $currentSumm > 0){
+                $newSumm = ['summ' => $currentSumm - $request['summ']];
+            }else{
+                return response()->json([
+                    'errors' => 'Сумма снятия не может превышать сумму депозита',
+                ]);
+            }
+
+            $deposite->update($newSumm);
+        }else{
+            return response()->json([
+                'errors' => $validation->errors(),
+            ], 422);
+        }
+        return $deposite;
+    }
 }
